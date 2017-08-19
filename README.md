@@ -1,21 +1,21 @@
-# templateBootstrap4
+[bootstrap]: https://www.schlix.com/web/schlix/data/extensions/icons/blank-bootstrap-4.png "title"
+[sass]: https://dynamicimageses-v2b.netdna-ssl.com/product_class_external_product/sass.png "sass"
+[gulp]: https://tastydigital.com/wp-content/themes/tastydigital/assets/images/tools/Gulp.png?773dce "gulp"
+[html5]: http://www.w3.org/html/logo/downloads/HTML5_Logo_128.png "html5"
+# Template Bootstrap 4
 
-### Template para trabajar con una base en bootstrap 4 ![logo]
-
-
-
-
-
-
+### Template para trabajar proyectos en una base con bootstrap 4 con sass y gulp
 
 
+![bootstrap] ![sass] ![gulp] ![html5]
 
 
+## Instalar dependencias
+```javascript
+npm install
+```
 
-
-
-
-
-
-
-[logo]: https://www.google.com.ar/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwjk89e2tuTVAhVHH5AKHcE_AJUQjRwIBw&url=https%3A%2F%2Fnowsquare.com%2Fbootstrap-ui-kit&psig=AFQjCNHLC6J43JtGvquqie8oxX_fhMsm9A&ust=1503270836829421
+## Compilar archivos y correr servidor de desarrollo
+```javascript
+npm start
+```
