@@ -4,7 +4,7 @@
 [html5]: http://www.w3.org/html/logo/downloads/HTML5_Logo_128.png "html5"
 # Template Bootstrap 4
 
-### Template para trabajar proyectos en una base con bootstrap 4, sass y gulp
+### Template para trabajar proyectos con bootstrap 4 usando sass y gulp
 
 
 
