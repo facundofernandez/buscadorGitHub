@@ -1,7 +1,7 @@
 var gulp        = require('gulp'),
     sass        = require('gulp-sass'),
     browserSync = require('browser-sync').create(),
-    reload      = browserSync.reload();
+    reload      = browserSync.reload;
 
 /* Tarea Server */
 gulp.task('server', ['sass'], function(){
