@@ -4,8 +4,7 @@
   "description": "Template para empezar con un proyecto de Bootstrap 4",
   "main": "index.js",
   "scripts": {
-    "start": "gulp",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp"
   },
   "keywords": [],
   "author": "Facundo Fernandez",
