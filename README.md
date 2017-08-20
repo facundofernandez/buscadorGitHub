@@ -7,7 +7,11 @@
 ### Template para trabajar proyectos en una base con bootstrap 4, sass y gulp
 
 
-![bootstrap] ![sass] ![gulp] ![html5]
+
+| Bootstrap 4   | SASS          | Gulp      | HTML5       |
+| :-----------: |:-------------:| :-----:   |  :---:| 
+| ![bootstrap]  | ![sass]       | ![gulp]   | ![html5]    |
+
 
 
 ## Instalar dependencias
@@ -19,7 +23,3 @@ npm install
 ```javascript
 npm start
 ```
-
-| Bootstrap 4   | SASS          | Gulp      | HTML5       |
-| :-----------: |:-------------:| :-----:   |  :---:| 
-| ![bootstrap]  | ![sass]       | ![gulp]   | ![html5]    |
