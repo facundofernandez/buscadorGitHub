@@ -10,13 +10,13 @@ gulp.task('server', ['sass'], function(){
     });
 
     /* Lugares donde el evento watch escucha cambios en archivos */
-    gulp.watch(['node_modules/bootstrap/scss/bootstrap.scss', 'src/scss/*.scss'], ['sass']);
+    gulp.watch(['node_modules/bootstrap/scss/bootstrap.scss', 'src/sass/*.sass'], ['sass']);
     gulp.watch("src/*.html").on('change', reload );
 });
 
 /* Tarea Sass */
 gulp.task('sass',function(){
-    var stream = gulp.src(['node_modules/bootstrap/scss/bootstrap.scss', 'src/scss/*.scss'])
+    var stream = gulp.src(['node_modules/bootstrap/scss/bootstrap.scss', 'src/sass/*.sass'])
     .pipe(sass())
     .pipe(gulp.dest('src/css'))
     .pipe(browserSync.stream());
@@ -26,7 +26,11 @@ gulp.task('sass',function(){
 
 /* Tarea Js */
 gulp.task('js',function(){
-    var stream =  gulp.src(['node_modules/bootstrap/dist/js/bootstrap.min.js', 'node_modules/jquery/dist/jquery.min.js','node_modules/popper.js/dist/umd/popper.min.js'])
+    var stream =  gulp.src([
+        'node_modules/bootstrap/dist/js/bootstrap.min.js',
+        'node_modules/jquery/dist/jquery.min.js',
+        'node_modules/popper.js/dist/umd/popper.min.js',
+        'node_modules/axios/dist/axios.min.js'])
     .pipe(gulp.dest("src/js"))
     .pipe(browserSync.stream());
 

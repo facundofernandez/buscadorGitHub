@@ -7,13 +7,228 @@
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
     </head>
     <body>
+        <div class="container">
+            <div class="jumbotron">
+                <h1 class="display-5">Buscador de usuarios Github</h1>
+                <p class="lead">Coloque el nombre de usuario</p>
+                <hr class="my-2">
+                <div class="row ">
+                    <div class="form-group col-2">
+                        <select class="form-control invisible">
+                            <option selected>Buscar por: </option>
+                            <option value="1">Usuario</option>
+                            <option value="2">Nombre</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-10">
+                        
+                        <input type="text" class="form-control" name="" id="search" aria-describedby="helpId" placeholder="">
+                        <span  class="bg-warning  text-white ocultar" id="error"></span >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="datosGit" class="container">
+            
+        </div>
         
-        <h1>Template Bootstrap 4</h1>
-        
-        <script src="js/jquery.js"></script>
+
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/popper.js"></script>
+        <script src="js/axios.min.js"></script>
+        <script>
+            (function(){
+
+                const URL = "https://api.github.com/";
+                const searchURL = "https://api.github.com/search/";
+
+                var inputSearch = document.getElementById("search");
+                var usuario = {};
+
+                inputSearch.addEventListener("keypress",function(e){
+                    if( e.keyCode == 13 ){
+                        obtenerUsuario(e.target.value)
+                    }else if(e.target.value.length > 3){
+                        /* buscarUsuarios(e.target.value) */
+                    }
+                    
+                });
+
+                function buscarUsuarios(texto){
+                    var params = "users?q="+texto+"+in:fullname";
+                    axios.get(searchURL + params)
+                    .then(function (response) {
+
+                        var data = response.data;
+                        console.log(data);
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });  
+                }
+
+                function validarCampo( campo ){
+                    return (campo == null || campo == undefined ? "" : campo)
+                }
+
+
+                function obtenerUsuario(idUsuario){
+
+
+                    /* obtengo datos de usuario filtrando por id de usuario de git */
+                    axios.get(URL + 'users/' + idUsuario)
+                    .then(function (response) {
+
+                        var data = response.data;
+                        console.log(data);
+                        usuario = {
+                            avatar: validarCampo(data.avatar_url),
+                            web:    validarCampo(data.blog),
+                            email:  validarCampo(data.email),
+                            followers: validarCampo(data.followers),
+                            following: validarCampo(data.following),
+                            git_url: validarCampo(data.html_url),
+                            nombre: validarCampo(data.name),
+                            usuario: validarCampo(data.login),
+                            url_repos: validarCampo(data.repos_url),
+                            location: validarCampo(data.location)
+                        }
+
+                        /* Creo la plantilla con los datos de usuario */
+                        var template = `
+
+                        <div class="jumbotron">
+                            <div class="media" id="datosUsuario">
+                                <img src="${usuario.avatar}" class="d-flex mr-3 rounded img-thumbnail" >
+                                <div class="media-body">
+                                    <h4 class="mt-0">${usuario.nombre}</h5>
+                                    <span id="location"><i class="fa fa-map-marker" aria-hidden="true"></i> ${usuario.location}</span>
+                                    <ul class="list-unstyled">
+                                        <li><span class="font-weight-bold">Usuario: </span>${usuario.usuario}</li>
+                                        <li>
+                                            <span class="font-weight-bold">Email: </span>${usuario.email}
+                                            
+                                        </li>
+                                        
+                                        <li><a href="${usuario.git_url}" target="_blank">${usuario.git_url}</a></li>
+                                    </ul>
+                                    <hr class="my-2">
+                                    <span class="badge badge-primary">Seguidores: ${usuario.followers}</span>
+                                    <span class="badge badge-primary">Seguidos: ${usuario.following}</span>
+                                        
+                                </div>  
+                            </div>
+                            <div id="datosRepositorios"></div>
+                        </div>
+
+                        `;
+                        document.getElementById("datosGit").innerHTML = template;
+
+                        /* Obtengo datos de repositorios del usuario en cuestion */
+                        
+                        axios.get(usuario.url_repos)
+                        .then(function (response) {
+
+                            var data = response.data;
+
+                            var template = `  
+                                <div id="accordion" role="tablist" aria-multiselectable="true">
+                                    <div class="card">
+                                        <div class="card-header" role="tab" id="headingOne">
+                                        <h5 class="mb-0">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Repositorios 
+                                            </a>
+                                            <span class="badge badge-primary"> ${response.data.length}</span>
+                                        </h5>
+                                        </div>
+                                        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                                            <div class="card-block">
+                            `;
+                            for(let i=0;i<data.length;i++){
+                                let elem = data[i];
+                                template += ` 
+                                
+                                <div class="media" id="datosUsuario">
+                                    <i class="fa fa-github fa-5 d-flex mr-3 rounded img-thumbnail" aria-hidden="true"></i>
+                                    <div class="media-body">
+                                        <h4 class="mt-0">${elem.name}</h5>
+                                        <ul class="list-unstyled">
+                                            <li><span class="lead">${validarCampo(elem.description)}</span></li>
+                                            <li><span class="">
+                                                <i class="fa fa-star" aria-hidden="true"></i> ${elem.stargazers_count}</span>
+                                                <i class="fa fa-eye" aria-hidden="true"></i> ${elem.watchers_count}</span>
+                                            </li>
+                                            <li><a href="${elem.html_url}" target="_blank"><span class="font-weight-bold">Github Url</span></a></li>
+                                            <li><span class="badge badge-primary">${elem.language}</span></li>
+                                        </ul>
+                                        
+                                        
+                                            
+                                    </div>  
+                                </div>
+                                <hr class="my-2">
+                              
+                                `;
+                            }
+                            template += `
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+
+                            document.getElementById("datosRepositorios").innerHTML = template;
+                            
+                            
+                            
+                            console.log(data);
+                        })
+                        .catch(function (error) {
+                            if(error.request.status == 404){
+                                let msj = `<i class="fa fa-exclamation-circle" aria-hidden="true"></i> Resultado no encontrado`
+                                mostrarMsjError(msj);
+                                
+
+                                console.warn(error.response.statusText);
+                            }
+                        });  
+
+
+                    })
+                    .catch(function (error) {
+
+                        if(error.request.status == 404){
+                            let msj = `<i class="fa fa-exclamation-circle" aria-hidden="true"></i> Resultado no encontrado`
+                            mostrarMsjError(msj);
+                            
+
+                            console.warn(error.response.statusText);
+                        }
+                        
+                    });  
+                }
+
+               
+                function mostrarMsjError(msj){
+                    var error = document.getElementById("error");
+                    error.classList.toggle("ocultar");
+                    error.innerHTML = msj;
+                    setTimeout(function(){
+                        error.innerHTML = "";
+                        error.classList.toggle("ocultar");
+                    },3000) 
+                }
+                
+
+            })()
+            </script>
     </body>
 </html>
