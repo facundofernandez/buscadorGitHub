@@ -16,3 +16,5 @@ npm install
 ```javascript
 npm start
 ```
+
+[ver ejemplo](https://facundofernandez.github.io/buscadorGitHub/src/index.html)
