@@ -1,17 +1,10 @@
-[bootstrap]: https://www.schlix.com/web/schlix/data/extensions/icons/blank-bootstrap-4.png "title"
-[sass]: https://dynamicimageses-v2b.netdna-ssl.com/product_class_external_product/sass.png "sass"
-[gulp]: https://tastydigital.com/wp-content/themes/tastydigital/assets/images/tools/Gulp.png?773dce "gulp"
-[html5]: http://www.w3.org/html/logo/downloads/HTML5_Logo_128.png "html5"
-# Template Bootstrap 4
+[git]: https://2.bp.blogspot.com/-o_Fx8shVwLE/V154a_DUQGI/AAAAAAAADLI/TFYLNk3rXPsnOn85vWKdWZxgfCpKCKC9ACLcB/s1600/github-circle.png "title"
 
-### Template para trabajar proyectos con bootstrap 4 usando sass y gulp
+# Buscador GitHub 
 
+### App hecha en js utilizando api de git, para buscar y obtener datos de usuarios
 
-
-| Bootstrap 4   | SASS          | Gulp      | HTML5       |
-| :-----------: |:-------------:| :-----:   |  :---:| 
-| ![bootstrap]  | ![sass]       | ![gulp]   | ![html5]    |
-
+![git]
 
 
 ## Instalar dependencias
