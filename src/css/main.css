@@ -18,6 +18,13 @@ body {
 #datosUsuario {
   position: relative; }
 
+.datosUsuario li:last-child span {
+  background: #007bff;
+  color: white;
+  margin-bottom: 5px; }
+  .datosUsuario li:last-child span .text-default {
+    color: black; }
+
 #datosRepositorios {
   padding-top: 10px; }
   #datosRepositorios .media {

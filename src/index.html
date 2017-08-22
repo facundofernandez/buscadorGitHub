@@ -16,14 +16,8 @@
                 <p class="lead">Coloque el nombre de usuario</p>
                 <hr class="my-2">
                 <div class="row ">
-                    <div class="form-group col-2">
-                        <select class="form-control invisible">
-                            <option selected>Buscar por: </option>
-                            <option value="1">Usuario</option>
-                            <option value="2">Nombre</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-10">
+
+                    <div class="form-group col-12">
                         
                         <input type="text" class="form-control" name="" id="search" aria-describedby="helpId" placeholder="">
                         <span  class="bg-warning  text-white ocultar" id="error"></span >
@@ -54,7 +48,7 @@
                     if( e.keyCode == 13 ){
                         obtenerUsuario(e.target.value)
                     }else if(e.target.value.length > 3){
-                        /* buscarUsuarios(e.target.value) */
+                        buscarUsuarios(e.target.value)
                     }
                     
                 });
@@ -86,7 +80,7 @@
                     .then(function (response) {
 
                         var data = response.data;
-                        console.log(data);
+
                         usuario = {
                             avatar: validarCampo(data.avatar_url),
                             web:    validarCampo(data.blog),
@@ -101,34 +95,8 @@
                         }
 
                         /* Creo la plantilla con los datos de usuario */
-                        var template = `
-
-                        <div class="jumbotron">
-                            <div class="media" id="datosUsuario">
-                                <img src="${usuario.avatar}" class="d-flex mr-3 rounded img-thumbnail" >
-                                <div class="media-body">
-                                    <h4 class="mt-0">${usuario.nombre}</h5>
-                                    <span id="location"><i class="fa fa-map-marker" aria-hidden="true"></i> ${usuario.location}</span>
-                                    <ul class="list-unstyled">
-                                        <li><span class="font-weight-bold">Usuario: </span>${usuario.usuario}</li>
-                                        <li>
-                                            <span class="font-weight-bold">Email: </span>${usuario.email}
-                                            
-                                        </li>
-                                        
-                                        <li><a href="${usuario.git_url}" target="_blank">${usuario.git_url}</a></li>
-                                    </ul>
-                                    <hr class="my-2">
-                                    <span class="badge badge-primary">Seguidores: ${usuario.followers}</span>
-                                    <span class="badge badge-primary">Seguidos: ${usuario.following}</span>
-                                        
-                                </div>  
-                            </div>
-                            <div id="datosRepositorios"></div>
-                        </div>
-
-                        `;
-                        document.getElementById("datosGit").innerHTML = template;
+                        
+                        document.getElementById("datosGit").innerHTML = templateUsuario(usuario);
 
                         /* Obtengo datos de repositorios del usuario en cuestion */
                         
@@ -151,11 +119,44 @@
                                         <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                                             <div class="card-block">
                             `;
+
+                            
                             for(let i=0;i<data.length;i++){
                                 let elem = data[i];
+                                var lenguajes;
+                                var template;
+                                
+
+                                axios.get(elem.languages_url)
+                                .then(function (response) {
+                                    var templateLenguaje=``;
+                                    lenguajes = response.data;
+                                    var suma = 0;
+                                    for(lenguaje in lenguajes)
+                                        suma = suma + lenguajes[lenguaje];
+                                        
+                                    for(lenguaje in lenguajes){
+                                        templateLenguaje += `
+                                        <span class="badge badge-info">
+                                            <span class="text-default">${lenguaje}: </span>%${(lenguajes[lenguaje]*100/suma).toFixed(2)}
+                                        </span>
+                                        `;
+                                        console.log(lenguaje,parseInt(lenguajes[lenguaje]*100/suma));
+                                        document.getElementById("lenguaje-"+elem.id).innerHTML = templateLenguaje;
+                                    }
+
+                            
+                           
+                                        
+                                }).catch(function (error) {
+                                    if(error.request.status == 404){
+                                        console.warn(error.response.statusText);
+                                    }
+                                });
+
                                 template += ` 
                                 
-                                <div class="media" id="datosUsuario">
+                                <div class="media datosUsuario" id="${elem.id}">
                                     <i class="fa fa-github fa-5 d-flex mr-3 rounded img-thumbnail" aria-hidden="true"></i>
                                     <div class="media-body">
                                         <h4 class="mt-0">${elem.name}</h5>
@@ -166,7 +167,7 @@
                                                 <i class="fa fa-eye" aria-hidden="true"></i> ${elem.watchers_count}</span>
                                             </li>
                                             <li><a href="${elem.html_url}" target="_blank"><span class="font-weight-bold">Github Url</span></a></li>
-                                            <li><span class="badge badge-primary">${elem.language}</span></li>
+                                            <li id="lenguaje-${elem.id}"></li>
                                         </ul>
                                         
                                         
@@ -190,6 +191,11 @@
                             
                             
                             console.log(data);
+
+
+                            
+
+
                         })
                         .catch(function (error) {
                             if(error.request.status == 404){
@@ -214,6 +220,36 @@
                         }
                         
                     });  
+                }
+
+                function templateUsuario(data){
+                    return `
+
+                        <div class="jumbotron">
+                            <div class="media" id="datosUsuario">
+                                <img src="${data.avatar}" class="d-flex mr-3 rounded img-thumbnail" >
+                                <div class="media-body">
+                                    <h4 class="mt-0">${data.nombre}</h5>
+                                    <span id="location"><i class="fa fa-map-marker" aria-hidden="true"></i> ${data.location}</span>
+                                    <ul class="list-unstyled">
+                                        <li><span class="font-weight-bold">Usuario: </span>${data.usuario}</li>
+                                        <li>
+                                            <span class="font-weight-bold">Email: </span>${data.email}
+                                            
+                                        </li>
+                                        
+                                        <li><a href="${data.git_url}" target="_blank">${data.git_url}</a></li>
+                                    </ul>
+                                    <hr class="my-2">
+                                    <span class="badge badge-primary">Seguidores: ${data.followers}</span>
+                                    <span class="badge badge-primary">Seguidos: ${data.following}</span>
+                                        
+                                </div>  
+                            </div>
+                            <div id="datosRepositorios"></div>
+                        </div>
+
+                        `;
                 }
 
                
